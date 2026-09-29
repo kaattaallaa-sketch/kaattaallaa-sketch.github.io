@@ -1,0 +1,110 @@
+﻿{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "ProofRail API",
+                 "version":  "0.3.0",
+                 "description":  "Payment-gated MCP compatibility certification.",
+                 "contact":  {
+                                 "url":  "https://drkdm4jd-8767.uks1.devtunnels.ms"
+                             },
+                 "x-guidance":  "Use ProofRail before deploying, upgrading, or trusting an MCP server. Call /api/certify over HTTP or mcp_release_certify over MCP. Payment uses Base Sepolia test-USDC."
+             },
+    "x-discovery":  {
+                        "ownershipProofs":  [
+                                                "0x865fC95cB5B9767DAfe07AcB0E0593FB40bCC28C"
+                                            ]
+                    },
+    "paths":  {
+                  "/health":  {
+                                  "get":  {
+                                              "summary":  "ProofRail health",
+                                              "security":  [
+
+                                                           ],
+                                              "responses":  {
+                                                                "200":  {
+                                                                            "description":  "Healthy"
+                                                                        }
+                                                            }
+                                          }
+                              },
+                  "/api/certify":  {
+                                       "post":  {
+                                                    "summary":  "Certify MCP release compatibility",
+                                                    "description":  "x402-paid deterministic MCP compatibility certification.",
+                                                    "security":  [
+                                                                     {
+                                                                         "x402":  [
+
+                                                                                  ]
+                                                                     }
+                                                                 ],
+                                                    "x-payment-info":  {
+                                                                           "protocols":  [
+                                                                                             "x402"
+                                                                                         ],
+                                                                           "price":  {
+                                                                                         "mode":  "fixed",
+                                                                                         "currency":  "USD",
+                                                                                         "amount":  "0.001"
+                                                                                     }
+                                                                       },
+                                                    "requestBody":  {
+                                                                        "required":  true,
+                                                                        "content":  {
+                                                                                        "application/json":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "type":  "object",
+                                                                                                                                "properties":  {
+                                                                                                                                                   "target_url":  {
+                                                                                                                                                                      "type":  "string"
+                                                                                                                                                                  },
+                                                                                                                                                   "declared_protocol_version":  {
+                                                                                                                                                                                     "type":  "string"
+                                                                                                                                                                                 },
+                                                                                                                                                   "check_profile":  {
+                                                                                                                                                                         "type":  "string",
+                                                                                                                                                                         "enum":  [
+                                                                                                                                                                                      "basic"
+                                                                                                                                                                                  ]
+                                                                                                                                                                     },
+                                                                                                                                                   "fixture_id":  {
+                                                                                                                                                                      "type":  "string"
+                                                                                                                                                                  }
+                                                                                                                                               },
+                                                                                                                                "required":  [
+                                                                                                                                                 "target_url"
+                                                                                                                                             ],
+                                                                                                                                "additionalProperties":  false
+                                                                                                                            }
+                                                                                                             }
+                                                                                    }
+                                                                    },
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "Certification result"
+                                                                              },
+                                                                      "402":  {
+                                                                                  "description":  "x402 payment required"
+                                                                              }
+                                                                  }
+                                                }
+                                   }
+              },
+    "components":  {
+                       "securitySchemes":  {
+                                               "x402":  {
+                                                            "type":  "apiKey",
+                                                            "in":  "header",
+                                                            "name":  "PAYMENT-SIGNATURE",
+                                                            "description":  "x402 V2 payment authorization"
+                                                        }
+                                           }
+                   },
+    "servers":  [
+                    {
+                        "url":  "https://drkdm4jd-8767.uks1.devtunnels.ms",
+                        "description":  "Live ProofRail Gate 1 execution origin"
+                    }
+                ]
+}

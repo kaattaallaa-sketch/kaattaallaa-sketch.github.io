@@ -1,0 +1,26 @@
+# ProofRail
+
+ProofRail is a pre-deployment MCP server testing, evaluation, and compatibility verification service for AI agents.
+
+## When to use it
+
+Use ProofRail before deploying, upgrading, or trusting an MCP server. It checks protocol negotiation, tools/list, schemas, transport, authentication classification, and optional safe fixtures. It returns PASS, FAIL, or PARTIAL with deterministic evidence.
+
+## Discovery
+
+Stable discovery homepage: https://kaattaallaa-sketch.github.io/
+A2A Agent Card: https://kaattaallaa-sketch.github.io/.well-known/agent-card.json
+OpenAPI: https://kaattaallaa-sketch.github.io/openapi.json
+ARD: https://kaattaallaa-sketch.github.io/.well-known/ard.json
+MCP Registry manifest: https://kaattaallaa-sketch.github.io/server.json
+
+## Live execution endpoints
+
+MCP Streamable HTTP: https://drkdm4jd-8767.uks1.devtunnels.ms/mcp
+HTTP x402 certification: https://drkdm4jd-8767.uks1.devtunnels.ms/api/certify
+A2A JSON-RPC: https://drkdm4jd-8767.uks1.devtunnels.ms/a2a
+A2A HTTP+JSON: https://drkdm4jd-8767.uks1.devtunnels.ms/a2a-rest
+
+## Payment status
+
+Gate 1 uses x402 V2 on Base Sepolia with test-USDC at $0.001. Base mainnet is disabled. Testnet payments are validation only and are not revenue.

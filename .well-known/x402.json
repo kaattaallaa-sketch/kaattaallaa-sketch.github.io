@@ -1,0 +1,17 @@
+{
+  "x402Version": 2,
+  "network": "eip155:84532",
+  "price": "$0.001",
+  "testnet": true,
+  "executionOrigin": "https://drkdm4jd-8767.uks1.devtunnels.ms",
+  "http": {
+    "url": "https://drkdm4jd-8767.uks1.devtunnels.ms/api/certify",
+    "method": "POST"
+  },
+  "mcp": {
+    "url": "https://drkdm4jd-8767.uks1.devtunnels.ms/mcp",
+    "transport": "streamable-http",
+    "tool": "mcp_release_certify"
+  },
+  "note": "Gate 1 uses Base Sepolia test-USDC. Mainnet is disabled."
+}

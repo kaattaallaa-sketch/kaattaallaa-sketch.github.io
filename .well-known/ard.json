@@ -1,0 +1,30 @@
+{
+  "specVersion": "0.9",
+  "host": {
+    "identifier": "kaattaallaa-sketch.github.io",
+    "displayName": "ProofRail",
+    "documentationUrl": "https://kaattaallaa-sketch.github.io/llms.txt",
+    "logoUrl": "https://kaattaallaa-sketch.github.io/favicon.svg"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:kaattaallaa-sketch.github.io:server:proofrail",
+      "displayName": "ProofRail MCP",
+      "type": "application/mcp-server-card+json",
+      "url": "https://kaattaallaa-sketch.github.io/.well-known/mcp/server-card.json",
+      "description": "MCP server testing, evaluation, verification and compatibility preflight before deployment.",
+      "tags": ["mcp","testing","evaluation","verification","preflight","x402"],
+      "capabilities": ["code.testing","ai.evaluation","dev.ci-cd","mcp_release_certify"],
+      "version": "0.2.1-gate1"
+    },
+    {
+      "identifier": "urn:air:kaattaallaa-sketch.github.io:agent:proofrail-access",
+      "displayName": "ProofRail Access Agent",
+      "type": "application/a2a-agent-card+json",
+      "url": "https://kaattaallaa-sketch.github.io/.well-known/agent-card.json",
+      "description": "A2A bridge for discovering and purchasing ProofRail MCP certification.",
+      "tags": ["a2a","mcp","x402","preflight","verification"],
+      "version": "0.2.1-gate1"
+    }
+  ]
+}
