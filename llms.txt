@@ -12,6 +12,7 @@ Stable discovery homepage: https://kaattaallaa-sketch.github.io/
 A2A Agent Card: https://kaattaallaa-sketch.github.io/.well-known/agent-card.json
 OpenAPI: https://kaattaallaa-sketch.github.io/openapi.json
 ARD: https://kaattaallaa-sketch.github.io/.well-known/ard.json
+x402 discovery: https://kaattaallaa-sketch.github.io/.well-known/x402
 MCP Registry manifest: https://kaattaallaa-sketch.github.io/server.json
 
 ## Live execution endpoints
