@@ -2,7 +2,7 @@
     "openapi":  "3.1.0",
     "info":  {
                  "title":  "ProofRail MCP Verification \u0026 Release Certification",
-                 "version":  "0.4.0",
+                 "version":  "0.4.1",
                  "description":  "Discover, preflight, verify, and certify public MCP servers before deployment or trust. ProofRail checks MCP reachability, protocol negotiation, tools/list, tool schemas, transport, and authentication behavior; full x402-paid certification returns a deterministic PASS, FAIL, or PARTIAL evidence receipt.",
                  "contact":  {
                                  "url":  "https://kaattaallaa-sketch.github.io/proofrail-mcp/"
