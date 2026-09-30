@@ -22,4 +22,4 @@
 - Network: eip155:8453
 - Price: $0.10 USDC
 
-The paid result is PASS, FAIL, or PARTIAL with a deterministic payment-linked receipt and a public verification URL.
+Paid requests accept required_tools and baseline_schema_hashes. Results include ALLOW/BLOCK/REVIEW, reusable contract_baseline, schema fingerprints and a payment-linked receipt. Schema changes require review; they are not proof of incompatibility. Purchase guide: https://kaattaallaa-sketch.github.io/proofrail-mcp/quickstart/

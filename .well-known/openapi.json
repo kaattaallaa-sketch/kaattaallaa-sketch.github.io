@@ -2,12 +2,12 @@
     "openapi":  "3.1.0",
     "info":  {
                  "title":  "ProofRail MCP Verification \u0026 Release Certification",
-                 "version":  "0.3.0",
+                 "version":  "0.4.0",
                  "description":  "Discover, preflight, verify, and certify public MCP servers before deployment or trust. ProofRail checks MCP reachability, protocol negotiation, tools/list, tool schemas, transport, and authentication behavior; full x402-paid certification returns a deterministic PASS, FAIL, or PARTIAL evidence receipt.",
                  "contact":  {
                                  "url":  "https://kaattaallaa-sketch.github.io/proofrail-mcp/"
                              },
-                 "x-guidance":  "Use /api/radar to discover public MCP endpoints from ProofRail\u0027s autonomous index; over MCP, call find_mcp_servers for task-oriented discovery or mcp_radar_snapshot for advanced filtering. Search by query and filter or sort by outcome, connection, source, tool name, tool count, observation count, pass rate, stability, freshness, or relevance. Use /api/radar/changes or mcp_radar_changes to inspect changes between scans. Before deploying, upgrading, or trusting a specific MCP server, call /api/preflight over HTTP or mcp_release_preflight over MCP; it is free and needs no payment. Use /api/certify or mcp_release_certify for the deterministic evidence receipt; paid results include a public verification_url for the settled receipt. Full certification payment uses Base mainnet USDC."
+                 "x-guidance":  "Use /api/radar to discover public MCP endpoints from ProofRail\u0027s autonomous index; over MCP, call find_mcp_servers for task-oriented discovery or mcp_radar_snapshot for advanced filtering. Search by query and filter or sort by outcome, connection, source, tool name, tool count, observation count, pass rate, stability, freshness, or relevance. Use /api/radar/changes or mcp_radar_changes to inspect changes between scans. Before deploying, upgrading, or trusting a specific MCP server, call /api/preflight over HTTP or mcp_release_preflight over MCP; it is free and needs no payment. Use /api/purchase for the buying guide. Use /api/certify or mcp_release_certify with required_tools and optional baseline_schema_hashes for paid deployment contract checks, ALLOW/BLOCK/REVIEW decisions, and the deterministic evidence receipt; paid results include a public verification_url for the settled receipt. Full certification payment uses Base mainnet USDC."
              },
     "x-discovery":  {
                         "ownershipProofs":  [
@@ -476,6 +476,27 @@
                                                                                                                                                                          "default":  "basic",
                                                                                                                                                                          "description":  "Verification profile. basic checks connection, MCP protocol negotiation, tools/list, and tool input schemas."
                                                                                                                                                                      },
+                                                                                                                                                   "required_tools":  {
+                                                                                                                                                                          "type":  "array",
+                                                                                                                                                                          "minItems":  1,
+                                                                                                                                                                          "maxItems":  100,
+                                                                                                                                                                          "items":  {
+                                                                                                                                                                                        "type":  "string",
+                                                                                                                                                                                        "minLength":  1,
+                                                                                                                                                                                        "maxLength":  128
+                                                                                                                                                                                    },
+                                                                                                                                                                          "description":  "Paid deployment gate: tool names your integration requires."
+                                                                                                                                                                      },
+                                                                                                                                                   "baseline_schema_hashes":  {
+                                                                                                                                                                                  "type":  "object",
+                                                                                                                                                                                  "minProperties":  1,
+                                                                                                                                                                                  "maxProperties":  100,
+                                                                                                                                                                                  "additionalProperties":  {
+                                                                                                                                                                                                               "type":  "string",
+                                                                                                                                                                                                               "pattern":  "^[a-f0-9]{64}$"
+                                                                                                                                                                                                           },
+                                                                                                                                                                                  "description":  "Prior paid contract_baseline. Removed tools fail; changed input-schema fingerprints require review."
+                                                                                                                                                                              },
                                                                                                                                                    "fixture_id":  {
                                                                                                                                                                       "type":  "string",
                                                                                                                                                                       "description":  "Optional server-configured safe fixture id. Arbitrary remote tool arguments are never accepted from callers."
