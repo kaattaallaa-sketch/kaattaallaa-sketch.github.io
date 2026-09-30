@@ -1,13 +1,13 @@
-﻿{
+{
     "openapi":  "3.1.0",
     "info":  {
-                 "title":  "ProofRail API",
+                 "title":  "ProofRail MCP Verification \u0026 Release Certification",
                  "version":  "0.3.0",
-                 "description":  "Payment-gated MCP compatibility certification.",
+                 "description":  "Discover, preflight, verify, and certify public MCP servers before deployment or trust. ProofRail checks MCP reachability, protocol negotiation, tools/list, tool schemas, transport, and authentication behavior; full x402-paid certification returns a deterministic PASS, FAIL, or PARTIAL evidence receipt.",
                  "contact":  {
-                                 "url":  "https://drkdm4jd-8767.uks1.devtunnels.ms"
+                                 "url":  "https://kaattaallaa-sketch.github.io/proofrail-mcp/"
                              },
-                 "x-guidance":  "Use ProofRail before deploying, upgrading, or trusting an MCP server. Call /api/certify over HTTP or mcp_release_certify over MCP. Payment uses Base Sepolia test-USDC."
+                 "x-guidance":  "Use /api/radar to discover public MCP endpoints from ProofRail\u0027s autonomous index; over MCP, call find_mcp_servers for task-oriented discovery or mcp_radar_snapshot for advanced filtering. Search by query and filter or sort by outcome, connection, source, tool name, tool count, observation count, pass rate, stability, freshness, or relevance. Use /api/radar/changes or mcp_radar_changes to inspect changes between scans. Before deploying, upgrading, or trusting a specific MCP server, call /api/preflight over HTTP or mcp_release_preflight over MCP; it is free and needs no payment. Use /api/certify or mcp_release_certify for the deterministic evidence receipt; paid results include a public verification_url for the settled receipt. Full certification payment uses Base mainnet USDC."
              },
     "x-discovery":  {
                         "ownershipProofs":  [
@@ -28,25 +28,423 @@
                                                             }
                                           }
                               },
+                  "/api/radar":  {
+                                     "get":  {
+                                                 "summary":  "Find observed public MCP servers",
+                                                 "description":  "Search ProofRail\u0027s autonomous catalog of public MCP servers by capability and observed compatibility. Read-only cached observations; does not trigger a live scan.",
+                                                 "tags":  [
+                                                              "Search",
+                                                              "Utility"
+                                                          ],
+                                                 "security":  [
+
+                                                              ],
+                                                 "parameters":  [
+                                                                    {
+                                                                        "name":  "outcome",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "string",
+                                                                                       "enum":  [
+                                                                                                    "PASS",
+                                                                                                    "FAIL",
+                                                                                                    "PARTIAL"
+                                                                                                ]
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "connection",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "string",
+                                                                                       "enum":  [
+                                                                                                    "ok",
+                                                                                                    "auth_required",
+                                                                                                    "transport_error"
+                                                                                                ]
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "source",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "string",
+                                                                                       "enum":  [
+                                                                                                    "official_mcp_registry",
+                                                                                                    "github_code_search"
+                                                                                                ]
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "tool_contains",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "string"
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "min_tools",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "integer",
+                                                                                       "minimum":  0,
+                                                                                       "maximum":  10000
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "min_observations",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "integer",
+                                                                                       "minimum":  1,
+                                                                                       "maximum":  1000000
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "min_pass_rate",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "number",
+                                                                                       "minimum":  0,
+                                                                                       "maximum":  1
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "query",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "string",
+                                                                                       "maxLength":  200
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "sort",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "string",
+                                                                                       "enum":  [
+                                                                                                    "relevance",
+                                                                                                    "stability",
+                                                                                                    "observations",
+                                                                                                    "tools",
+                                                                                                    "freshness"
+                                                                                                ]
+                                                                                   }
+                                                                    },
+                                                                    {
+                                                                        "name":  "limit",
+                                                                        "in":  "query",
+                                                                        "required":  false,
+                                                                        "schema":  {
+                                                                                       "type":  "integer",
+                                                                                       "minimum":  1,
+                                                                                       "maximum":  50,
+                                                                                       "default":  20
+                                                                                   }
+                                                                    }
+                                                                ],
+                                                 "responses":  {
+                                                                   "200":  {
+                                                                               "description":  "Latest cached Radar snapshot"
+                                                                           },
+                                                                   "503":  {
+                                                                               "description":  "Radar snapshot unavailable"
+                                                                           }
+                                                               }
+                                             }
+                                 },
+                  "/api/radar/changes":  {
+                                             "get":  {
+                                                         "summary":  "Track MCP server compatibility changes",
+                                                         "description":  "Read-only changes observed between the two latest autonomous MCP Radar scans, including protocol, tools, schemas, connection state, and outcome drift. Does not trigger a live scan.",
+                                                         "tags":  [
+                                                                      "Search",
+                                                                      "Utility"
+                                                                  ],
+                                                         "security":  [
+
+                                                                      ],
+                                                         "parameters":  [
+                                                                            {
+                                                                                "name":  "type",
+                                                                                "in":  "query",
+                                                                                "required":  false,
+                                                                                "schema":  {
+                                                                                               "type":  "string",
+                                                                                               "enum":  [
+                                                                                                            "NEW",
+                                                                                                            "NOT_SEEN",
+                                                                                                            "OUTCOME_CHANGED",
+                                                                                                            "CONNECTION_CHANGED",
+                                                                                                            "PROTOCOL_CHANGED",
+                                                                                                            "TOOLS_CHANGED",
+                                                                                                            "TOOL_NAMES_CHANGED",
+                                                                                                            "SCHEMA_ISSUES_CHANGED"
+                                                                                                        ]
+                                                                                           }
+                                                                            },
+                                                                            {
+                                                                                "name":  "limit",
+                                                                                "in":  "query",
+                                                                                "required":  false,
+                                                                                "schema":  {
+                                                                                               "type":  "integer",
+                                                                                               "minimum":  1,
+                                                                                               "maximum":  50,
+                                                                                               "default":  20
+                                                                                           }
+                                                                            }
+                                                                        ],
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "Changes between the two latest Radar snapshots"
+                                                                                   },
+                                                                           "503":  {
+                                                                                       "description":  "Radar changes unavailable"
+                                                                                   }
+                                                                       }
+                                                     }
+                                         },
+                  "/api/preflight":  {
+                                         "post":  {
+                                                      "operationId":  "preflightMcpServer",
+                                                      "summary":  "Free MCP server compatibility preflight",
+                                                      "description":  "Validate an MCP server before deployment or trust at no cost: checks reachability, protocol negotiation, tools/list, tool count, and schema issue count, then returns the paid certification next step.",
+                                                      "tags":  [
+                                                                   "Utility",
+                                                                   "AI"
+                                                               ],
+                                                      "security":  [
+
+                                                                   ],
+                                                      "requestBody":  {
+                                                                          "required":  true,
+                                                                          "content":  {
+                                                                                          "application/json":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "type":  "object",
+                                                                                                                                  "properties":  {
+                                                                                                                                                     "target_url":  {
+                                                                                                                                                                        "type":  "string",
+                                                                                                                                                                        "description":  "Public MCP Streamable HTTP endpoint URL to verify before deployment, upgrade, or trust.",
+                                                                                                                                                                        "examples":  [
+                                                                                                                                                                                         "https://example.com/mcp"
+                                                                                                                                                                                     ]
+                                                                                                                                                                    },
+                                                                                                                                                     "declared_protocol_version":  {
+                                                                                                                                                                                       "type":  "string",
+                                                                                                                                                                                       "description":  "Optional MCP protocol version claimed by the target; ProofRail reports a mismatch if negotiation differs.",
+                                                                                                                                                                                       "examples":  [
+                                                                                                                                                                                                        "2025-11-25"
+                                                                                                                                                                                                    ]
+                                                                                                                                                                                   },
+                                                                                                                                                     "check_profile":  {
+                                                                                                                                                                           "type":  "string",
+                                                                                                                                                                           "enum":  [
+                                                                                                                                                                                        "basic"
+                                                                                                                                                                                    ],
+                                                                                                                                                                           "default":  "basic",
+                                                                                                                                                                           "description":  "Verification profile. basic checks connection, MCP protocol negotiation, tools/list, and tool input schemas."
+                                                                                                                                                                       }
+                                                                                                                                                 },
+                                                                                                                                  "required":  [
+                                                                                                                                                   "target_url"
+                                                                                                                                               ],
+                                                                                                                                  "additionalProperties":  false
+                                                                                                                              }
+                                                                                                               }
+                                                                                      }
+                                                                      },
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "Preflight summary and paid-certification next step",
+                                                                                    "content":  {
+                                                                                                    "application/json":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "type":  "object",
+                                                                                                                                            "required":  [
+                                                                                                                                                             "preflight",
+                                                                                                                                                             "next_step"
+                                                                                                                                                         ],
+                                                                                                                                            "properties":  {
+                                                                                                                                                               "preflight":  {
+                                                                                                                                                                                 "type":  "object",
+                                                                                                                                                                                 "required":  [
+                                                                                                                                                                                                  "outcome",
+                                                                                                                                                                                                  "protocol_compatible",
+                                                                                                                                                                                                  "connection",
+                                                                                                                                                                                                  "tools_count",
+                                                                                                                                                                                                  "tool_names",
+                                                                                                                                                                                                  "tool_names_truncated",
+                                                                                                                                                                                                  "schema_issues"
+                                                                                                                                                                                              ],
+                                                                                                                                                                                 "properties":  {
+                                                                                                                                                                                                    "outcome":  {
+                                                                                                                                                                                                                    "type":  "string",
+                                                                                                                                                                                                                    "enum":  [
+                                                                                                                                                                                                                                 "PASS",
+                                                                                                                                                                                                                                 "FAIL",
+                                                                                                                                                                                                                                 "PARTIAL"
+                                                                                                                                                                                                                             ]
+                                                                                                                                                                                                                },
+                                                                                                                                                                                                    "protocol_compatible":  {
+                                                                                                                                                                                                                                "type":  [
+                                                                                                                                                                                                                                             "boolean",
+                                                                                                                                                                                                                                             "null"
+                                                                                                                                                                                                                                         ]
+                                                                                                                                                                                                                            },
+                                                                                                                                                                                                    "connection":  {
+                                                                                                                                                                                                                       "type":  "string",
+                                                                                                                                                                                                                       "enum":  [
+                                                                                                                                                                                                                                    "ok",
+                                                                                                                                                                                                                                    "auth_required",
+                                                                                                                                                                                                                                    "transport_error"
+                                                                                                                                                                                                                                ]
+                                                                                                                                                                                                                   },
+                                                                                                                                                                                                    "negotiated_protocol_version":  {
+                                                                                                                                                                                                                                        "type":  "string"
+                                                                                                                                                                                                                                    },
+                                                                                                                                                                                                    "tools_count":  {
+                                                                                                                                                                                                                        "type":  [
+                                                                                                                                                                                                                                     "integer",
+                                                                                                                                                                                                                                     "null"
+                                                                                                                                                                                                                                 ]
+                                                                                                                                                                                                                    },
+                                                                                                                                                                                                    "tool_names":  {
+                                                                                                                                                                                                                       "type":  [
+                                                                                                                                                                                                                                    "array",
+                                                                                                                                                                                                                                    "null"
+                                                                                                                                                                                                                                ],
+                                                                                                                                                                                                                       "items":  {
+                                                                                                                                                                                                                                     "type":  "string"
+                                                                                                                                                                                                                                 }
+                                                                                                                                                                                                                   },
+                                                                                                                                                                                                    "tool_names_truncated":  {
+                                                                                                                                                                                                                                 "type":  "boolean"
+                                                                                                                                                                                                                             },
+                                                                                                                                                                                                    "schema_issues":  {
+                                                                                                                                                                                                                          "type":  [
+                                                                                                                                                                                                                                       "integer",
+                                                                                                                                                                                                                                       "null"
+                                                                                                                                                                                                                                   ]
+                                                                                                                                                                                                                      }
+                                                                                                                                                                                                },
+                                                                                                                                                                                 "additionalProperties":  false
+                                                                                                                                                                             },
+                                                                                                                                                               "next_step":  {
+                                                                                                                                                                                 "type":  "object",
+                                                                                                                                                                                 "description":  "Exact paid-certification transition after the free preflight.",
+                                                                                                                                                                                 "required":  [
+                                                                                                                                                                                                  "mcp_tool",
+                                                                                                                                                                                                  "http_endpoint",
+                                                                                                                                                                                                  "payment_mode",
+                                                                                                                                                                                                  "price_atomic",
+                                                                                                                                                                                                  "asset",
+                                                                                                                                                                                                  "network",
+                                                                                                                                                                                                  "result"
+                                                                                                                                                                                              ],
+                                                                                                                                                                                 "properties":  {
+                                                                                                                                                                                                    "mcp_tool":  {
+                                                                                                                                                                                                                     "type":  "string",
+                                                                                                                                                                                                                     "const":  "mcp_release_certify"
+                                                                                                                                                                                                                 },
+                                                                                                                                                                                                    "http_endpoint":  {
+                                                                                                                                                                                                                          "type":  "string",
+                                                                                                                                                                                                                          "const":  "/api/certify"
+                                                                                                                                                                                                                      },
+                                                                                                                                                                                                    "payment_mode":  {
+                                                                                                                                                                                                                         "type":  "string",
+                                                                                                                                                                                                                         "const":  "x402"
+                                                                                                                                                                                                                     },
+                                                                                                                                                                                                    "price_atomic":  {
+                                                                                                                                                                                                                         "type":  "string"
+                                                                                                                                                                                                                     },
+                                                                                                                                                                                                    "asset":  {
+                                                                                                                                                                                                                  "type":  "string"
+                                                                                                                                                                                                              },
+                                                                                                                                                                                                    "network":  {
+                                                                                                                                                                                                                    "type":  "string"
+                                                                                                                                                                                                                },
+                                                                                                                                                                                                    "result":  {
+                                                                                                                                                                                                                   "type":  "string"
+                                                                                                                                                                                                               }
+                                                                                                                                                                                                },
+                                                                                                                                                                                 "additionalProperties":  false
+                                                                                                                                                                             }
+                                                                                                                                                           },
+                                                                                                                                            "additionalProperties":  false
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                }
+                                                                                },
+                                                                        "503":  {
+                                                                                    "description":  "Preflight concurrency capacity reached"
+                                                                                }
+                                                                    }
+                                                  }
+                                     },
+                  "/api/receipts/{receipt_id}":  {
+                                                     "get":  {
+                                                                 "operationId":  "verifyProofRailReceipt",
+                                                                 "summary":  "Verify a ProofRail certification receipt",
+                                                                 "description":  "Public read-only verification for a payment-linked ProofRail receipt. Settled receipts are immutable; pending receipts return HTTP 202.",
+                                                                 "security":  [
+
+                                                                              ],
+                                                                 "parameters":  [
+                                                                                    {
+                                                                                        "name":  "receipt_id",
+                                                                                        "in":  "path",
+                                                                                        "required":  true,
+                                                                                        "schema":  {
+                                                                                                       "type":  "string",
+                                                                                                       "pattern":  "^[a-f0-9]{64}$"
+                                                                                                   }
+                                                                                    }
+                                                                                ],
+                                                                 "responses":  {
+                                                                                   "200":  {
+                                                                                               "description":  "Settled receipt verified"
+                                                                                           },
+                                                                                   "202":  {
+                                                                                               "description":  "Receipt exists but settlement is still pending"
+                                                                                           },
+                                                                                   "404":  {
+                                                                                               "description":  "Receipt not found"
+                                                                                           }
+                                                                               }
+                                                             }
+                                                 },
                   "/api/certify":  {
                                        "post":  {
-                                                    "summary":  "Certify MCP release compatibility",
-                                                    "description":  "x402-paid deterministic MCP compatibility certification.",
-                                                    "security":  [
-                                                                     {
-                                                                         "x402":  [
-
-                                                                                  ]
-                                                                     }
-                                                                 ],
+                                                    "operationId":  "certifyMcpServerRelease",
+                                                    "summary":  "MCP server verification, compatibility preflight \u0026 release certification",
+                                                    "description":  "x402-paid MCP server verification and release certification. Validates reachability, protocol negotiation, tools/list, schemas, transport, and authentication behavior before deployment, upgrade, or trust; returns deterministic PASS, FAIL, or PARTIAL evidence with a receipt.",
+                                                    "tags":  [
+                                                                 "Utility",
+                                                                 "AI"
+                                                             ],
                                                     "x-payment-info":  {
                                                                            "protocols":  [
-                                                                                             "x402"
+                                                                                             {
+                                                                                                 "x402":  {
+
+                                                                                                          }
+                                                                                             }
                                                                                          ],
                                                                            "price":  {
                                                                                          "mode":  "fixed",
                                                                                          "currency":  "USD",
-                                                                                         "amount":  "0.001"
+                                                                                         "amount":  "0.10"
                                                                                      }
                                                                        },
                                                     "requestBody":  {
@@ -57,19 +455,30 @@
                                                                                                                                 "type":  "object",
                                                                                                                                 "properties":  {
                                                                                                                                                    "target_url":  {
-                                                                                                                                                                      "type":  "string"
+                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                      "description":  "Public MCP Streamable HTTP endpoint URL to verify before deployment, upgrade, or trust.",
+                                                                                                                                                                      "examples":  [
+                                                                                                                                                                                       "https://example.com/mcp"
+                                                                                                                                                                                   ]
                                                                                                                                                                   },
                                                                                                                                                    "declared_protocol_version":  {
-                                                                                                                                                                                     "type":  "string"
+                                                                                                                                                                                     "type":  "string",
+                                                                                                                                                                                     "description":  "Optional MCP protocol version claimed by the target; ProofRail reports a mismatch if negotiation differs.",
+                                                                                                                                                                                     "examples":  [
+                                                                                                                                                                                                      "2025-11-25"
+                                                                                                                                                                                                  ]
                                                                                                                                                                                  },
                                                                                                                                                    "check_profile":  {
                                                                                                                                                                          "type":  "string",
                                                                                                                                                                          "enum":  [
                                                                                                                                                                                       "basic"
-                                                                                                                                                                                  ]
+                                                                                                                                                                                  ],
+                                                                                                                                                                         "default":  "basic",
+                                                                                                                                                                         "description":  "Verification profile. basic checks connection, MCP protocol negotiation, tools/list, and tool input schemas."
                                                                                                                                                                      },
                                                                                                                                                    "fixture_id":  {
-                                                                                                                                                                      "type":  "string"
+                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                      "description":  "Optional server-configured safe fixture id. Arbitrary remote tool arguments are never accepted from callers."
                                                                                                                                                                   }
                                                                                                                                                },
                                                                                                                                 "required":  [
@@ -82,29 +491,103 @@
                                                                     },
                                                     "responses":  {
                                                                       "200":  {
-                                                                                  "description":  "Certification result"
+                                                                                  "description":  "Deterministic MCP certification result and payment-linked receipt id",
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "type":  "object",
+                                                                                                                                          "required":  [
+                                                                                                                                                           "certification",
+                                                                                                                                                           "receipt_id",
+                                                                                                                                                           "verification_url"
+                                                                                                                                                       ],
+                                                                                                                                          "properties":  {
+                                                                                                                                                             "certification":  {
+                                                                                                                                                                                   "type":  "object",
+                                                                                                                                                                                   "required":  [
+                                                                                                                                                                                                    "outcome",
+                                                                                                                                                                                                    "checks",
+                                                                                                                                                                                                    "evidence",
+                                                                                                                                                                                                    "verifier_version"
+                                                                                                                                                                                                ],
+                                                                                                                                                                                   "properties":  {
+                                                                                                                                                                                                      "outcome":  {
+                                                                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                                                                      "enum":  [
+                                                                                                                                                                                                                                   "PASS",
+                                                                                                                                                                                                                                   "FAIL",
+                                                                                                                                                                                                                                   "PARTIAL"
+                                                                                                                                                                                                                               ],
+                                                                                                                                                                                                                      "description":  "Deterministic overall compatibility verdict."
+                                                                                                                                                                                                                  },
+                                                                                                                                                                                                      "checks":  {
+                                                                                                                                                                                                                     "type":  "array",
+                                                                                                                                                                                                                     "description":  "Individual verification checks such as connection, MCP protocol, tools/list, and schemas.",
+                                                                                                                                                                                                                     "items":  {
+                                                                                                                                                                                                                                   "type":  "object",
+                                                                                                                                                                                                                                   "required":  [
+                                                                                                                                                                                                                                                    "name",
+                                                                                                                                                                                                                                                    "outcome"
+                                                                                                                                                                                                                                                ],
+                                                                                                                                                                                                                                   "properties":  {
+                                                                                                                                                                                                                                                      "name":  {
+                                                                                                                                                                                                                                                                   "type":  "string"
+                                                                                                                                                                                                                                                               },
+                                                                                                                                                                                                                                                      "outcome":  {
+                                                                                                                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                                                                                                                      "enum":  [
+                                                                                                                                                                                                                                                                                   "PASS",
+                                                                                                                                                                                                                                                                                   "FAIL",
+                                                                                                                                                                                                                                                                                   "PARTIAL"
+                                                                                                                                                                                                                                                                               ]
+                                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                                      "code":  {
+                                                                                                                                                                                                                                                                   "type":  "string"
+                                                                                                                                                                                                                                                               },
+                                                                                                                                                                                                                                                      "detail":  {
+                                                                                                                                                                                                                                                                     "type":  "string"
+                                                                                                                                                                                                                                                                 }
+                                                                                                                                                                                                                                                  },
+                                                                                                                                                                                                                                   "additionalProperties":  false
+                                                                                                                                                                                                                               }
+                                                                                                                                                                                                                 },
+                                                                                                                                                                                                      "evidence":  {
+                                                                                                                                                                                                                       "type":  "object",
+                                                                                                                                                                                                                       "description":  "Machine-readable evidence observed from the target MCP endpoint.",
+                                                                                                                                                                                                                       "additionalProperties":  true
+                                                                                                                                                                                                                   },
+                                                                                                                                                                                                      "verifier_version":  {
+                                                                                                                                                                                                                               "type":  "string"
+                                                                                                                                                                                                                           }
+                                                                                                                                                                                                  },
+                                                                                                                                                                                   "additionalProperties":  false
+                                                                                                                                                                               },
+                                                                                                                                                             "receipt_id":  {
+                                                                                                                                                                                "type":  "string",
+                                                                                                                                                                                "description":  "Deterministic payment-linked receipt identifier for this certification execution."
+                                                                                                                                                                            },
+                                                                                                                                                             "verification_url":  {
+                                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                                      "format":  "uri",
+                                                                                                                                                                                      "description":  "Public URL for verifying the finalized payment-linked receipt after settlement."
+                                                                                                                                                                                  }
+                                                                                                                                                         },
+                                                                                                                                          "additionalProperties":  false
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              }
                                                                               },
                                                                       "402":  {
-                                                                                  "description":  "x402 payment required"
+                                                                                  "description":  "Payment Required"
                                                                               }
                                                                   }
                                                 }
                                    }
               },
-    "components":  {
-                       "securitySchemes":  {
-                                               "x402":  {
-                                                            "type":  "apiKey",
-                                                            "in":  "header",
-                                                            "name":  "PAYMENT-SIGNATURE",
-                                                            "description":  "x402 V2 payment authorization"
-                                                        }
-                                           }
-                   },
     "servers":  [
                     {
                         "url":  "https://drkdm4jd-8767.uks1.devtunnels.ms",
-                        "description":  "Live ProofRail Gate 1 execution origin"
+                        "description":  "Live ProofRail execution origin"
                     }
                 ]
 }

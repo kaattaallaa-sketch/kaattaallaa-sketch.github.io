@@ -2,7 +2,4 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://kaattaallaa-sketch.github.io/</loc></url>
   <url><loc>https://kaattaallaa-sketch.github.io/llms.txt</loc></url>
-  <url><loc>https://kaattaallaa-sketch.github.io/openapi.json</loc></url>
-  <url><loc>https://kaattaallaa-sketch.github.io/.well-known/agent-card.json</loc></url>
-  <url><loc>https://kaattaallaa-sketch.github.io/.well-known/ard.json</loc></url>
 </urlset>

@@ -1,27 +1,25 @@
 # ProofRail
 
-ProofRail is a pre-deployment MCP server testing, evaluation, and compatibility verification service for AI agents.
+> Stable discovery facade for autonomous MCP discovery, free preflight, and x402-paid deterministic certification.
 
-## When to use it
+## Stable discovery
+- Homepage: https://kaattaallaa-sketch.github.io/
+- OpenAPI: https://kaattaallaa-sketch.github.io/openapi.json
+- x402 discovery: https://kaattaallaa-sketch.github.io/.well-known/x402.json
+- A2A Agent Card: https://kaattaallaa-sketch.github.io/.well-known/agent-card.json
+- MCP Registry manifest: https://kaattaallaa-sketch.github.io/server.json
+- Radar catalog: https://kaattaallaa-sketch.github.io/proofrail-mcp/radar/
+- Machine-readable Radar: https://kaattaallaa-sketch.github.io/proofrail-mcp/radar/catalog.json
 
-Use ProofRail before deploying, upgrading, or trusting an MCP server. It checks protocol negotiation, tools/list, schemas, transport, authentication classification, and optional safe fixtures. It returns PASS, FAIL, or PARTIAL with deterministic evidence.
+## Live execution
+- MCP: https://drkdm4jd-8767.uks1.devtunnels.ms/mcp
+- Free preflight: https://drkdm4jd-8767.uks1.devtunnels.ms/api/preflight
+- Paid certification: https://drkdm4jd-8767.uks1.devtunnels.ms/api/certify
+- Receipt verification: https://drkdm4jd-8767.uks1.devtunnels.ms/api/receipts/{receipt_id}
 
-## Discovery
+## Payment
+- Protocol: x402 V2
+- Network: eip155:8453
+- Price: $0.10 USDC
 
-Stable discovery homepage: https://kaattaallaa-sketch.github.io/
-A2A Agent Card: https://kaattaallaa-sketch.github.io/.well-known/agent-card.json
-OpenAPI: https://kaattaallaa-sketch.github.io/openapi.json
-ARD: https://kaattaallaa-sketch.github.io/.well-known/ard.json
-x402 discovery: https://kaattaallaa-sketch.github.io/.well-known/x402
-MCP Registry manifest: https://kaattaallaa-sketch.github.io/server.json
-
-## Live execution endpoints
-
-MCP Streamable HTTP: https://drkdm4jd-8767.uks1.devtunnels.ms/mcp
-HTTP x402 certification: https://drkdm4jd-8767.uks1.devtunnels.ms/api/certify
-A2A JSON-RPC: https://drkdm4jd-8767.uks1.devtunnels.ms/a2a
-A2A HTTP+JSON: https://drkdm4jd-8767.uks1.devtunnels.ms/a2a-rest
-
-## Payment status
-
-Gate 1 uses x402 V2 on Base Sepolia with test-USDC at $0.001. Base mainnet is disabled. Testnet payments are validation only and are not revenue.
+The paid result is PASS, FAIL, or PARTIAL with a deterministic payment-linked receipt and a public verification URL.

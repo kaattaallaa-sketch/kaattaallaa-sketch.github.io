@@ -1,18 +1,1 @@
-{
-  "linkset": [
-    {
-      "anchor": "https://kaattaallaa-sketch.github.io/",
-      "service-desc": [
-        {
-          "href": "https://kaattaallaa-sketch.github.io/openapi.json",
-          "type": "application/vnd.oai.openapi+json"
-        }
-      ],
-      "item": [
-        {"href": "https://drkdm4jd-8767.uks1.devtunnels.ms/api/certify"},
-        {"href": "https://drkdm4jd-8767.uks1.devtunnels.ms/mcp"},
-        {"href": "https://drkdm4jd-8767.uks1.devtunnels.ms/a2a"}
-      ]
-    }
-  ]
-}
+{"linkset":[{"anchor":"https://drkdm4jd-8767.uks1.devtunnels.ms/","service-desc":[{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/openapi.json","type":"application/vnd.oai.openapi+json"}],"item":[{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/api/radar"},{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/api/radar/changes"},{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/api/preflight"},{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/api/certify"},{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/mcp"},{"href":"https://drkdm4jd-8767.uks1.devtunnels.ms/a2a"}]}]}

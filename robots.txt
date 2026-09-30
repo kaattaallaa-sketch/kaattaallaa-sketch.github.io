@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://kaattaallaa-sketch.github.io/sitemap.xml
-Agentmap: https://kaattaallaa-sketch.github.io/.well-known/ard.json
+Sitemap: https://kaattaallaa-sketch.github.io/proofrail-mcp/sitemap.xml
